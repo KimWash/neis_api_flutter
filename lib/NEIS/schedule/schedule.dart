@@ -41,7 +41,7 @@ List<Schedule> parseSchedules(dynamic res) {
   return days.map((e) => Schedule.fromList(e)).toList();
 }
 
-Future<List<Schedule>> fetchSchedules() async {
+Future<List<Schedule>> fetchSchedules(String MSCODE, String SCCODE) async {
   var month = lengthCheck(now.month.toString());
   final lastday =
       lengthCheck(DateTime(now.year, now.month + 1, 0).day.toString());
@@ -51,9 +51,8 @@ Future<List<Schedule>> fetchSchedules() async {
 
   String firstDayOfMonth = formatter.format(DateTime(now.year, now.month, 1));
   String endOfMonth = formatter.format(DateTime(now.year, now.month + 1, 0));
-  debugPrint(firstDayOfMonth + ", " + endOfMonth);
   final res = await http.get(Uri.parse(
-      'https://open.neis.go.kr/hub/SchoolSchedule?ATPT_OFCDC_SC_CODE=M10&SD_SCHUL_CODE=8000376&Type=json&AA_FROM_YMD=$start&AA_TO_YMD=$end'));
+      'https://open.neis.go.kr/hub/SchoolSchedule?ATPT_OFCDC_SC_CODE=$MSCODE&SD_SCHUL_CODE=$SCCODE&Type=json&AA_FROM_YMD=$start&AA_TO_YMD=$end'));
   if (res.statusCode == 200) {
     var jsonBody = json.decode(res.body);
 

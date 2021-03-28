@@ -37,6 +37,7 @@ class Meal {
                 .replaceAll('<br/>', "\n"),
       );
     }
+    return null;
   }
 }
 
@@ -51,13 +52,13 @@ List<Meal> parseMeals(dynamic res) {
         mealsToAdd[(int.parse(meal['MMEAL_SC_CODE']) - 1)] = (meal['DDISH_NM']);
       }
     }
-    //debugPrint(meals.toString());
+
     days.add(mealsToAdd);
   }
   return days.map((e) => Meal.fromList(e)).toList();
 }
 
-Future<List<Meal>> fetchMeals() async {
+Future<List<Meal>> fetchMeals(String MSCODE, String SCCODE) async {
   var month = lengthCheck(now.month.toString());
   final lastday =
       lengthCheck(DateTime(now.year, now.month + 1, 0).day.toString());
@@ -65,10 +66,8 @@ Future<List<Meal>> fetchMeals() async {
   final start = "${now.year}${month}01";
   final end = "${now.year}${month}${lastday}";
 
-  debugPrint(
-      "https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=M10&SD_SCHUL_CODE=8000376&Type=meal&KEY=76ebe67f34c44b7ba5c10ac9f3b4060e&MLSV_FROM_YMD=$start&MLSV_TO_YMD=$end&Type=json");
   final res = await http.get(Uri.parse(
-      "https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=M10&SD_SCHUL_CODE=8000376&Type=meal&KEY=76ebe67f34c44b7ba5c10ac9f3b4060e&MLSV_FROM_YMD=$start&MLSV_TO_YMD=$end&Type=json"));
+      "https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=$MSCODE&SD_SCHUL_CODE=$SCCODE&Type=meal&KEY=76ebe67f34c44b7ba5c10ac9f3b4060e&MLSV_FROM_YMD=$start&MLSV_TO_YMD=$end&Type=json"));
   if (res.statusCode == 200) {
     var jsonBody = json.decode(res.body);
 
@@ -81,4 +80,5 @@ Future<List<Meal>> fetchMeals() async {
   } else {
     throw Exception('Failed..;');
   }
+  return null;
 }

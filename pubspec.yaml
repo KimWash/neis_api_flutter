@@ -1,8 +1,7 @@
 name: neis_api
-description: A new Flutter package project.
-version: 0.0.1
-author: KimWash
-repository: 
+description: Flutter package for access neis api.
+version: 0.0.2
+repository: https://github.com/KimWash/neis_api
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
