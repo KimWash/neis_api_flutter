@@ -1,6 +1,6 @@
 name: neis_api
 description: Flutter package for access neis api.
-version: 0.0.2
+version: 0.0.4
 repository: https://github.com/KimWash/neis_api
 
 environment:

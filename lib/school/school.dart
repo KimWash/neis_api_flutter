@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'package:neis_api/meal/meal.dart';
 import 'package:neis_api/schedule/schedule.dart';
 
@@ -45,21 +44,23 @@ enum Region {
 }
 
 class School {
-  final mealCache = HashMap<int, List<Meal>>();
-  final scheduleCache = HashMap<int, List<Schedule>>();
   final Region region;
   final String code;
+  var mealCache = Map<int, List<Meal>>();
+  var scheduleCache = Map<int, List<Schedule>>();
 
   School(this.region, this.code);
 
   Future<List<Meal>> getMonthlyMeal(int year, int month) async {
     final cacheKey = year * 12 + month;
-    if (mealCache.containsValue(cacheKey)) {
-      return mealCache[cacheKey];
+
+    if (mealCache != null) {
+      if (mealCache.containsKey(cacheKey)) {
+        return mealCache[cacheKey];
+      }
     }
     final meal = await fetchMeals(MSCODE[region.index], code);
     mealCache[cacheKey] = meal;
-
     return meal;
   }
 
