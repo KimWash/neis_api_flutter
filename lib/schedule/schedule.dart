@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:neis_api/NEIS/tools/datautils.dart';
+import 'package:neis_api/tools/datautils.dart';
 
 final now = DateTime.now();
 final formatter = DateFormat('yyyyMMdd');
