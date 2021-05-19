@@ -1,7 +1,7 @@
 import 'package:neis_api/meal/meal.dart';
 import 'package:neis_api/schedule/schedule.dart';
 
-const MSCODE = [
+const mscode = [
   'B10',
   'C10',
   'D10',
@@ -59,7 +59,7 @@ class School {
         return mealCache[cacheKey];
       }
     }
-    final meal = await fetchMeals(MSCODE[region.index], code);
+    final meal = await fetchMeals(mscode[region.index], code, year, month);
     mealCache[cacheKey] = meal;
     return meal;
   }
@@ -70,7 +70,8 @@ class School {
       return scheduleCache[cacheKey];
     }
 
-    final schedule = await fetchSchedules(MSCODE[region.index], code);
+    final schedule =
+        await fetchSchedules(mscode[region.index], code, year, month);
     scheduleCache[cacheKey] = schedule;
 
     return schedule;

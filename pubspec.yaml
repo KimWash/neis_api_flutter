@@ -1,6 +1,6 @@
 name: neis_api
-description: Flutter package for access neis api.
-version: 0.0.4
+description: Flutter package for access neis api. ⚠️This Package was made for schools in South Korea!
+version: 0.0.5 #Publish: dart pub publish 
 repository: https://github.com/KimWash/neis_api
 
 environment:

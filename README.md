@@ -1,5 +1,8 @@
 # NEIS API
 
+⚠️ **This Package was made for schools in South Korea!**
+
+
 대한민국 교육청 산하 교육기관의 급식, 학사일정 API를 이용하기 위한 Flutter용 패키지입니다.
 
 ## 사용법

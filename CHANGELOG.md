@@ -2,3 +2,4 @@
 ## [0.0.2] - Make School variable
 ## [0.0.3] - Implement School class, Data caching
 ## [0.0.4] - Fix caching bug
+## [0.0.5] - Implement data based on real date

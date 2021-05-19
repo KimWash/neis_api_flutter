@@ -4,10 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:neis_api/tools/datautils.dart';
 
-final now = DateTime.now();
 final formatter = DateFormat('yyyyMMdd');
-final lastday =
-    lengthCheck(DateTime(now.year, now.month + 1, 0).day.toString());
 
 class Meal {
   final String breakfast;
@@ -44,30 +41,34 @@ class Meal {
 List<Meal> parseMeals(dynamic res) {
   final parsed = res.cast<Map<String, dynamic>>();
   List<List<String>> days = [];
+  DateTime date = DateTime.tryParse(parsed[0]['MLSV_YMD']);
+  final lastday = lengthCheck(DateTime(date.year, date.month + 1, 0)
+      .day
+      .toString()); // get last day of month
   for (var i = 0; i < int.parse(lastday) + 1; i++) {
     List<String> mealsToAdd = ['', '', ''];
     for (var meal in parsed) {
       if (meal['MLSV_YMD'] ==
-          "${now.year}${lengthCheck(now.month.toString())}${lengthCheck((i + 1).toString())}") {
+          "${date.year}${lengthCheck(date.month.toString())}${lengthCheck((i + 1).toString())}") {
         mealsToAdd[(int.parse(meal['MMEAL_SC_CODE']) - 1)] = (meal['DDISH_NM']);
       }
     }
-
     days.add(mealsToAdd);
   }
   return days.map((e) => Meal.fromList(e)).toList();
 }
 
-Future<List<Meal>> fetchMeals(String MSCODE, String SCCODE) async {
-  var month = lengthCheck(now.month.toString());
-  final lastday =
-      lengthCheck(DateTime(now.year, now.month + 1, 0).day.toString());
+Future<List<Meal>> fetchMeals(
+    String mscode, String sccode, int year, int month) async {
+  final newMonth =
+      lengthCheck(month.toString()); //append 0 front if one digit number
+  final lastday = lengthCheck(DateTime(year, month + 1, 0).day.toString());
 
-  final start = "${now.year}${month}01";
-  final end = "${now.year}${month}${lastday}";
+  final start = "$year${newMonth}01";
+  final end = "$year$newMonth$lastday";
 
   final res = await http.get(Uri.parse(
-      "https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=$MSCODE&SD_SCHUL_CODE=$SCCODE&Type=meal&KEY=76ebe67f34c44b7ba5c10ac9f3b4060e&MLSV_FROM_YMD=$start&MLSV_TO_YMD=$end&Type=json"));
+      "https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=$mscode&SD_SCHUL_CODE=$sccode&Type=meal&KEY=76ebe67f34c44b7ba5c10ac9f3b4060e&MLSV_FROM_YMD=$start&MLSV_TO_YMD=$end&Type=json"));
   if (res.statusCode == 200) {
     var jsonBody = json.decode(res.body);
 
